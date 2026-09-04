@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RiskShield - AI-Powered Fraud and Risk Detection System for Payment Gateways like Razorpay. Real-time anomaly scoring, explainable AI, and multi-tier security actions.">
+  <title>RiskShield — AI Fraud & Risk Detection Platform</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app-layout">
+    
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-logo" style="overflow: hidden; padding: 0;">
+          <img src="" alt="RiskShield Emblem" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-md);">
+        </div>
+        <div class="brand-info">
+          <div class="brand-name">
+            <span class="brand-title">RiskShield</span>
+            <span class="brand-tag">AI CORE v2.4</span>
+          </div>
+          <span class="brand-subtitle">Razorpay Intelligent Fraud & Risk Protection Engine</span>
+        </div>
+      </div>
+
+      <!-- Engine Live Status Pill -->
+      <div class="engine-live-pill">
+        <span class="live-dot pulse"></span>
+        <span class="live-text">Gateway Shield: <strong id="engineStatusLabel">Active (0.012s)</strong></span>
+      </div>
+
+      <!-- Header KPI Ticker -->
+      <div class="header-stats-ticker">
+        <div class="ticker-item">
+          <span class="ticker-label">Today Scanned</span>
+          <span class="ticker-val" id="tickerScannedCount">1,482</span>
+        </div>
+        <div class="ticker-divider"></div>
+        <div class="ticker-item">
+          <span class="ticker-label">Fraud Prevented</span>
+          <span class="ticker-val text-emerald" id="tickerFraudPrevented">₹14.85 Lakh</span>
+        </div>
+        <div class="ticker-divider"></div>
+        <div class="ticker-item">
+          <span class="ticker-label">False Positive</span>
+          <span class="ticker-val text-cyan">0.03%</span>
+        </div>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Main Navigation Bar (4 Key Views) -->
+    <nav class="app-nav" id="appNav">
+      <div class="nav-links">
+        <a href="#monitor" class="nav-link active" data-page="monitor" id="navMonitor">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          <span>Live Risk Monitor</span>
+          <span class="nav-badge" id="liveBadge">LIVE</span>
+        </a>
+
+        <a href="#sandbox" class="nav-link" data-page="sandbox" id="navSandbox">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+          <span>Sandbox Simulator</span>
+          <span class="nav-pill">Interactive</span>
+        </a>
+
+        <a href="#rules" class="nav-link" data-page="rules" id="navRules">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="4" y1="21" x2="4" y2="14"/>
+            <line x1="4" y1="10" x2="4" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12" y2="3"/>
+            <line x1="20" y1="21" x2="20" y2="16"/>
+            <line x1="20" y1="12" x2="20" y2="3"/>
+            <line x1="1" y1="14" x2="7" y2="14"/>
+            <line x1="9" y1="8" x2="15" y2="8"/>
+            <line x1="17" y1="16" x2="23" y2="16"/>
+          </svg>
+          <span>Rules &amp; Policies</span>
+        </a>
+
+        <a href="#incidents" class="nav-link" data-page="incidents" id="navIncidents">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <span>SecOps Incidents</span>
+          <span class="nav-counter" id="incidentsCounter">4</span>
+        </a>
+      </div>
+
+      <div class="nav-quick-actions">
+        <button class="btn btn-sm btn-outline-cyan" id="quickInjectBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          <span>Inject Test Anomaly</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Container with Multi-Page Views -->
+    <main class="app-main">
+
+      <!-- ==========================================
+           PAGE 1: LIVE RISK MONITOR
+           ========================================== -->
+      <section class="page-view active" id="pageMonitor">
+        
+        <!-- KPI Metric Row -->
+        <div class="kpi-grid">
+          <div class="kpi-card glass-panel">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Processed (24h)</span>
+              <div class="kpi-icon icon-blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiTotalVolume">₹1,84,32,900</div>
+            <div class="kpi-footer">
+              <span class="text-emerald font-semibold">↑ +14.2%</span>
+              <span class="kpi-sub">vs yesterday's baseline</span>
+            </div>
+          </div>
+
+          <div class="kpi-card glass-panel">
+            <div class="kpi-header">
+              <span class="kpi-title">Fraud Prevented</span>
+              <div class="kpi-icon icon-emerald">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value text-emerald" id="kpiFraudPrevented">₹18,45,000</div>
+            <div class="kpi-footer">
+              <span class="badge badge-emerald">32 Critical Attacks Stopped</span>
+            </div>
+          </div>
+
+          <div class="kpi-card glass-panel">
+            <div class="kpi-header">
+              <span class="kpi-title">Step-Up 2FA Challenges</span>
+              <div class="kpi-icon icon-amber">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value text-amber" id="kpiStepUpChallenges">89</div>
+            <div class="kpi-footer">
+              <span class="text-emerald">94.1%</span>
+              <span class="kpi-sub">legitimate users cleared</span>
+            </div>
+          </div>
+
+          <div class="kpi-card glass-panel">
+            <div class="kpi-header">
+              <span class="kpi-title">Critical Auto-Blocked</span>
+              <div class="kpi-icon icon-rose">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value text-rose" id="kpiBlockedCount">18</div>
+            <div class="kpi-footer">
+              <span class="badge badge-rose">0 Latency Impact</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Stream Controls & Filters -->
+        <div class="feed-control-bar glass-panel">
+          <div class="feed-left">
+            <div class="feed-status-indicator">
+              <span class="live-dot pulse"></span>
+              <span class="feed-status-title">Live Ingestion Pipeline</span>
+              <span class="feed-badge" id="streamSpeedBadge">Auto-Streaming (3.5s)</span>
+            </div>
+            <div class="stream-buttons">
+              <button class="btn btn-sm btn-dark" id="toggleStreamBtn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                <span id="toggleStreamText">Pause Stream</span>
+              </button>
+              <button class="btn btn-sm btn-dark" id="clearStreamBtn">Clear Feed</button>
+            </div>
+          </div>
+
+          <div class="feed-filters">
+            <span class="filter-label">Filter Severity:</span>
+            <div class="filter-pills">
+              <button class="filter-pill active" data-filter="ALL">All (<span id="countAll">0</span>)</button>
+              <button class="filter-pill filter-low" data-filter="LOW">Allowed (<span id="countLow">0</span>)</button>
+              <button class="filter-pill filter-medium" data-filter="MEDIUM">Monitored (<span id="countMedium">0</span>)</button>
+              <button class="filter-pill filter-high" data-filter="HIGH">High / 2FA (<span id="countHigh">0</span>)</button>
+              <button class="filter-pill filter-critical" data-filter="CRITICAL">Blocked (<span id="countCritical">0</span>)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Feed Split Layout (Feed List + Selected Item Quick Inspector) -->
+        <div class="monitor-split-grid">
+          
+          <!-- Left Column: Transaction Feed -->
+          <div class="feed-container">
+            <div class="transaction-list" id="transactionList">
+              <!-- Dynamically populated transaction cards -->
+            </div>
+          </div>
+
+          <!-- Right Column: Real-Time Quick Inspector & Threat Radar -->
+          <aside class="quick-inspector glass-panel" id="quickInspector">
+            <div class="inspector-header">
+              <div class="inspector-title-wrap">
+                <span class="badge badge-cyan">DEEP INSPECTOR</span>
+                <h3 class="inspector-title" id="inspTxnId">Select a transaction</h3>
+              </div>
+              <span class="badge badge-outline" id="inspTimestamp">Real-Time</span>
+            </div>
+
+            <div class="inspector-body" id="inspectorBody">
+              <div class="empty-inspector-state">
+                <div class="empty-icon">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                  </svg>
+                </div>
+                <h4>Select any transaction from the stream</h4>
+                <p>Click "Inspect" on any transaction card to view AI behavioral comparison, device intelligence, and explainable score factors.</p>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 2: SANDBOX SIMULATOR
+           ========================================== -->
+      <section class="page-view" id="pageSandbox">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Risk Engine Sandbox Simulator</h2>
+            <p class="page-subtitle">Inject pre-configured fraud scenarios or build custom transactions to test the RiskShield detection engine in real time.</p>
+          </div>
+          <span class="badge badge-indigo">Zero Risk Test Environment</span>
+        </div>
+
+        <!-- Pre-Configured Scenarios Bar -->
+        <div class="section-title-wrap">
+          <h3 class="section-heading">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Pre-Configured Test Scenarios
+          </h3>
+          <span class="text-muted text-sm">Click any scenario to load into simulator</span>
+        </div>
+
+        <div class="scenarios-grid" id="scenariosGrid">
+          <!-- Populated by app.js from PRESET_SCENARIOS -->
+        </div>
+
+        <!-- Interactive Sandbox Grid (Form + Real-Time Engine Result) -->
+        <div class="sandbox-workspace-grid">
+          
+          <!-- Custom Transaction Builder Form -->
+          <div class="sandbox-card glass-panel">
+            <div class="card-header">
+              <div class="card-header-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <h3>Transaction Signal Parameters</h3>
+              </div>
+              <button class="btn btn-xs btn-outline-cyan" id="resetSandboxBtn">Reset to Baseline</button>
+            </div>
+
+            <form id="sandboxForm" class="sandbox-form">
+              
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label for="sbUserSelect" class="form-label">User Profile &amp; Behavioral Baseline</label>
+                  <select id="sbUserSelect" class="form-control">
+                    <option value="usr_mumbai_01" selected>Rahul Sharma (Mumbai • ₹500–₹2k Baseline)</option>
+                    <option value="usr_blr_02">Priya Patel (Bengaluru • ₹1k–₹6k Baseline)</option>
+                    <option value="usr_del_03">Amit Verma (Delhi NCR • ₹300–₹1.8k Baseline)</option>
+                  </select>
+                </div>
+
+                <div class="form-group col-6">
+                  <label for="sbAmount" class="form-label">Transaction Amount (₹ INR)</label>
+                  <div class="input-with-affix">
+                    <span class="affix">₹</span>
+                    <input type="number" id="sbAmount" class="form-control" value="50000" min="1" max="1000000" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label for="sbLocation" class="form-label">Originating Geolocation / City</label>
+                  <input type="text" id="sbLocation" class="form-control" value="London, UK" placeholder="e.g. Mumbai or London, UK">
+                </div>
+
+                <div class="form-group col-6">
+                  <label for="sbDevice" class="form-label">Device &amp; Browser Fingerprint</label>
+                  <input type="text" id="sbDevice" class="form-control" value="Linux / Firefox Headless (Unknown Device)" placeholder="e.g. iPhone 14 Pro">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label for="sbIp" class="form-label">Client IP Address</label>
+                  <input type="text" id="sbIp" class="form-control" value="185.220.101.5" placeholder="e.g. 49.36.120.44">
+                </div>
+
+                <div class="form-group col-6">
+                  <label for="sbMerchant" class="form-label">Merchant &amp; MCC Category</label>
+                  <input type="text" id="sbMerchant" class="form-control" value="CryptoPay Global Escrow Ltd" placeholder="e.g. Swiggy Food">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-6">
+                  <label for="sbFailedLogins" class="form-label">Recent Failed Login Attempts (Last 15m)</label>
+                  <div class="stepper-wrap">
+                    <input type="range" id="sbFailedLogins" min="0" max="6" value="3" class="slider-range">
+                    <span class="stepper-val" id="failedLoginsDisplay">3 attempts</span>
+                  </div>
+                </div>
+
+                <div class="form-group col-6 form-group-toggle">
+                  <label class="form-label">Network Anonymization</label>
+                  <label class="switch-control">
+                    <input type="checkbox" id="sbVpnCheck" checked>
+                    <span class="switch-slider"></span>
+                    <span class="switch-text">Flagged VPN / Tor Exit Node</span>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-block btn-lg" id="runEvaluateBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>⚡ Run AI Risk Assessment</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Engine Result & Explainable AI (XAI) Output Card -->
+          <div class="sandbox-card glass-panel" id="sandboxResultCard">
+            <div class="card-header">
+              <div class="card-header-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <h3>AI Decision &amp; Explainability Engine</h3>
+              </div>
+              <span class="badge badge-rose" id="sbResultActionBadge">CRITICAL: BLOCKED</span>
+            </div>
+
+            <!-- Score Summary Row -->
+            <div class="score-summary-box">
+              <div class="score-gauge-wrap">
+                <div class="score-circle-gauge" id="sbGaugeCircle">
+                  <div class="gauge-inner">
+                    <span class="gauge-number" id="sbScoreVal">98</span>
+                    <span class="gauge-denom">/100</span>
+                    <span class="gauge-sub" id="sbRiskLevelVal">CRITICAL</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="score-explanation">
+                <div class="policy-action-row">
+                  <span class="policy-label">Policy Action:</span>
+                  <span class="policy-tag action-blocked" id="sbPolicyTag">BLOCKED</span>
+                </div>
+                <p class="policy-description" id="sbPolicyDesc">
+                  Critical anomaly detected. Severe amount deviation (25x baseline) combined with unknown device, foreign IP, and prior failed login attempts.
+                </p>
+                <div class="sandbox-action-buttons">
+                  <button class="btn btn-sm btn-outline-cyan" id="sbInspectDeepBtn">
+                    View Full Audit Payload
+                  </button>
+                  <button class="btn btn-sm btn-amber" id="sbTriggerStepUpBtn">
+                    Simulate Step-Up 2FA Flow
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Behavioral Baseline vs Current Anomaly Bar -->
+            <div class="baseline-comparison-section">
+              <div class="section-subheading">
+                <span>Behavioral Baseline vs Requested Amount</span>
+                <span class="badge badge-outline" id="sbAmountRatio">25x Normal Limit</span>
+              </div>
+              <div class="baseline-track">
+                <div class="baseline-normal-range" title="Habitual Range: ₹500 - ₹2,000">
+                  <span class="track-label">Normal: ₹500–₹2,000</span>
+                </div>
+                <div class="baseline-spike-marker" id="sbSpikeMarker" style="left: 92%;">
+                  <span class="marker-pulse"></span>
+                  <span class="marker-tooltip" id="sbMarkerAmount">₹50,000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Explainable AI (XAI) Waterfall Feature Attribution -->
+            <div class="xai-waterfall-section">
+              <div class="section-subheading">
+                <span>Explainable AI (SHAP) Factor Breakdown</span>
+                <span class="text-muted text-xs">Points contributing to final risk score</span>
+              </div>
+              <div class="waterfall-bars" id="sbWaterfallList">
+                <!-- Populated dynamically with feature impact bars -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 3: RULES & POLICY ENGINE
+           ========================================== -->
+      <section class="page-view" id="pageRules">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Fraud Rules &amp; Policy Threshold Configuration</h2>
+            <p class="page-subtitle">Configure risk score tier boundaries, velocity controls, and autonomous decision rules applied across all transactions.</p>
+          </div>
+          <button class="btn btn-primary" id="saveRulesBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            <span>Save &amp; Deploy Rulebook</span>
+          </button>
+        </div>
+
+        <!-- 4-Tier Policy Sliders Card -->
+        <div class="rules-card glass-panel">
+          <div class="card-header">
+            <div class="card-header-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+              <h3>Risk Score Action Thresholds (0 - 100 Scale)</h3>
+            </div>
+            <span class="badge badge-cyan">4 Dynamic Action Tiers</span>
+          </div>
+
+          <div class="thresholds-visual-bar">
+            <div class="tier-segment tier-low" style="width: 30%;">
+              <span>LOW (0–30)</span>
+              <strong>ALLOWED</strong>
+            </div>
+            <div class="tier-segment tier-med" style="width: 35%;">
+              <span>MEDIUM (31–65)</span>
+              <strong>MONITORED</strong>
+            </div>
+            <div class="tier-segment tier-high" style="width: 20%;">
+              <span>HIGH (66–85)</span>
+              <strong>STEP-UP 2FA</strong>
+            </div>
+            <div class="tier-segment tier-crit" style="width: 15%;">
+              <span>CRITICAL (86–100)</span>
+              <strong>BLOCKED</strong>
+            </div>
+          </div>
+
+          <div class="thresholds-controls-grid">
+            <div class="threshold-input-box">
+              <div class="threshold-header">
+                <span class="badge badge-emerald">Low Risk Cutoff</span>
+                <span class="thresh-val" id="lowThreshVal">0 - 30</span>
+              </div>
+              <p class="thresh-desc">Transactions below this threshold are immediately authorized with zero friction.</p>
+              <input type="range" id="inputLowThresh" min="15" max="40" value="30" class="slider-range slider-emerald">
+            </div>
+
+            <div class="threshold-input-box">
+              <div class="threshold-header">
+                <span class="badge badge-cyan">Medium Risk Upper Bound</span>
+                <span class="thresh-val" id="medThreshVal">31 - 65</span>
+              </div>
+              <p class="thresh-desc">Authorized seamlessly, but tagged for post-settlement SecOps surveillance.</p>
+              <input type="range" id="inputMedThresh" min="45" max="75" value="65" class="slider-range slider-cyan">
+            </div>
+
+            <div class="threshold-input-box">
+              <div class="threshold-header">
+                <span class="badge badge-amber">High Risk 2FA Bound</span>
+                <span class="thresh-val" id="highThreshVal">66 - 85</span>
+              </div>
+              <p class="thresh-desc">Payment paused; user prompted for SMS OTP or Biometric authentication.</p>
+              <input type="range" id="inputHighThresh" min="70" max="90" value="85" class="slider-range slider-amber">
+            </div>
+
+            <div class="threshold-input-box">
+              <div class="threshold-header">
+                <span class="badge badge-rose">Critical Risk Threshold</span>
+                <span class="thresh-val" id="critThreshVal">86 - 100</span>
+              </div>
+              <p class="thresh-desc">Immediately declined; IP &amp; device blacklisted and SecOps incident generated.</p>
+              <span class="auto-calc-note text-rose font-mono">≥ 86 (Automatic Block)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Rule Catalog -->
+        <div class="section-title-wrap">
+          <h3 class="section-heading">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Active Security Defense Rules
+          </h3>
+          <button class="btn btn-xs btn-outline-cyan" id="addRuleBtn">+ Add Custom Rule</button>
+        </div>
+
+        <div class="rules-list-grid">
+          
+          <div class="rule-card glass-panel">
+            <div class="rule-card-top">
+              <div class="rule-icon icon-rose">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+              </div>
+              <div class="rule-title-wrap">
+                <h4>Extreme Amount Deviation Multiplier</h4>
+                <span class="rule-meta">RULE-AMT-01 • Critical Priority</span>
+              </div>
+              <label class="switch-control">
+                <input type="checkbox" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <p class="rule-desc">Assigns +38 risk points if requested payment amount exceeds 15x of the user's historical baseline ceiling.</p>
+            <div class="rule-footer">
+              <span class="tag">Behavioral Anomaly</span>
+              <span class="tag tag-penalty">+38 Points</span>
+            </div>
+          </div>
+
+          <div class="rule-card glass-panel">
+            <div class="rule-card-top">
+              <div class="rule-icon icon-amber">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div class="rule-title-wrap">
+                <h4>Impossible Travel Velocity Guard</h4>
+                <span class="rule-meta">RULE-GEO-04 • High Priority</span>
+              </div>
+              <label class="switch-control">
+                <input type="checkbox" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <p class="rule-desc">Flags transactions originating > 2,000 km away from user habitual region or foreign IP without travel advisory.</p>
+            <div class="rule-footer">
+              <span class="tag">Geo Velocity</span>
+              <span class="tag tag-penalty">+24 Points</span>
+            </div>
+          </div>
+
+          <div class="rule-card glass-panel">
+            <div class="rule-card-top">
+              <div class="rule-icon icon-blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+              </div>
+              <div class="rule-title-wrap">
+                <h4>Hardware Fingerprint Novelty</h4>
+                <span class="rule-meta">RULE-DEV-02 • High Priority</span>
+              </div>
+              <label class="switch-control">
+                <input type="checkbox" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <p class="rule-desc">Penalizes unknown devices, modified user-agents, or headless browser automation signatures.</p>
+            <div class="rule-footer">
+              <span class="tag">Device Fingerprint</span>
+              <span class="tag tag-penalty">+22 Points</span>
+            </div>
+          </div>
+
+          <div class="rule-card glass-panel">
+            <div class="rule-card-top">
+              <div class="rule-icon icon-rose">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="rule-title-wrap">
+                <h4>Pre-Payment Brute Force Detection</h4>
+                <span class="rule-meta">RULE-AUTH-09 • Critical Priority</span>
+              </div>
+              <label class="switch-control">
+                <input type="checkbox" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+            <p class="rule-desc">Assigns +25 penalty if 3 or more failed passwords/PIN/OTP attempts occurred prior to checkout.</p>
+            <div class="rule-footer">
+              <span class="tag">Credential Stuffing</span>
+              <span class="tag tag-penalty">+25 Points</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==========================================
+           PAGE 4: SECOPS & INCIDENTS
+           ========================================== -->
+      <section class="page-view" id="pageIncidents">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">SecOps Incident Queue &amp; Analytics</h2>
+            <p class="page-subtitle">Security Operations Command center for managing escalated transactions, reviewing fraud attack vectors, and investigating user baselines.</p>
+          </div>
+          <div class="header-action-group">
+            <button class="btn btn-outline-cyan btn-sm" id="exportAuditJsonBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Export Audit JSON</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Threat Vector Analytics & Profiles Row -->
+        <div class="secops-analytics-grid">
+          
+          <!-- Attack Vector Distribution Card -->
+          <div class="secops-card glass-panel">
+            <div class="card-header">
+              <div class="card-header-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+                <h3>Fraud Attack Vector Breakdown</h3>
+              </div>
+              <span class="badge badge-outline">Past 7 Days</span>
+            </div>
+
+            <div class="vector-bars-wrap">
+              <div class="vector-item">
+                <div class="vector-label-row">
+                  <span>Account Takeover (ATO) Spikes</span>
+                  <strong class="text-rose">42% (₹28.4L)</strong>
+                </div>
+                <div class="vector-progress-track">
+                  <div class="vector-fill fill-rose" style="width: 42%;"></div>
+                </div>
+              </div>
+
+              <div class="vector-item">
+                <div class="vector-label-row">
+                  <span>Device Spoofing &amp; Emulators</span>
+                  <strong class="text-amber">28% (₹18.9L)</strong>
+                </div>
+                <div class="vector-progress-track">
+                  <div class="vector-fill fill-amber" style="width: 28%;"></div>
+                </div>
+              </div>
+
+              <div class="vector-item">
+                <div class="vector-label-row">
+                  <span>Impossible Geo Velocity Leaps</span>
+                  <strong class="text-cyan">18% (₹12.1L)</strong>
+                </div>
+                <div class="vector-progress-track">
+                  <div class="vector-fill fill-cyan" style="width: 18%;"></div>
+                </div>
+              </div>
+
+              <div class="vector-item">
+                <div class="vector-label-row">
+                  <span>Micro Card-Testing Probes</span>
+                  <strong class="text-indigo">12% (₹4.2L)</strong>
+                </div>
+                <div class="vector-progress-track">
+                  <div class="vector-fill fill-indigo" style="width: 12%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Behavioral Baseline Explorer -->
+          <div class="secops-card glass-panel">
+            <div class="card-header">
+              <div class="card-header-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <h3>User Behavioral Baseline Inspector</h3>
+              </div>
+              <span class="badge badge-indigo">AI Profile Explorer</span>
+            </div>
+
+            <div class="profile-selector-row">
+              <button class="profile-tab-btn active" data-user="usr_mumbai_01">Rahul Sharma (Mumbai)</button>
+              <button class="profile-tab-btn" data-user="usr_blr_02">Priya Patel (BLR)</button>
+              <button class="profile-tab-btn" data-user="usr_del_03">Amit Verma (Delhi)</button>
+            </div>
+
+            <div class="user-baseline-detail" id="userBaselineView">
+              <!-- Dynamically rendered profile metrics -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Incident Review Table -->
+        <div class="incidents-table-card glass-panel">
+          <div class="card-header">
+            <div class="card-header-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <h3>High &amp; Critical Incident Review Queue</h3>
+            </div>
+            <span class="badge badge-rose" id="activeIncidentsBadge">4 Awaiting Review</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Incident ID &amp; Time</th>
+                  <th>User &amp; Merchant</th>
+                  <th>Amount</th>
+                  <th>Risk Score</th>
+                  <th>Dominant Fraud Factor</th>
+                  <th>Current Status</th>
+                  <th>SecOps Actions</th>
+                </tr>
+              </thead>
+              <tbody id="incidentsTableBody">
+                <!-- Dynamically populated incident rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ==========================================
+         MODAL 1: STEP-UP 2FA VERIFICATION CHALLENGE
+         ========================================== -->
+    <div class="modal-backdrop" id="stepUpModal" aria-hidden="true">
+      <div class="modal-dialog glass-panel">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon icon-amber">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+              <h3 class="modal-title">RiskShield Step-Up 2FA Challenge</h3>
+              <p class="modal-sub">Additional verification required due to elevated risk score</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="closeStepUpModalBtn">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="stepup-summary-box">
+            <div class="stepup-info-row">
+              <span class="text-muted">Transaction ID:</span>
+              <strong class="font-mono text-cyan" id="modalTxnId">TXN-8823</strong>
+            </div>
+            <div class="stepup-info-row">
+              <span class="text-muted">Requested Amount:</span>
+              <strong class="text-white text-lg" id="modalAmount">₹14,500</strong>
+            </div>
+            <div class="stepup-info-row">
+              <span class="text-muted">Calculated Risk Score:</span>
+              <span class="badge badge-amber" id="modalScoreBadge">Score 78 (HIGH RISK)</span>
+            </div>
+          </div>
+
+          <div class="stepup-prompt">
+            <p>An authentication code has been dispatched via Secure SMS &amp; WhatsApp to the registered mobile number ending in <strong class="text-cyan">...4321</strong>.</p>
+            <div class="demo-hint-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              <span>Demo OTP: <strong class="text-emerald font-mono">739218</strong> (or click Autofill)</span>
+            </div>
+          </div>
+
+          <div class="otp-inputs-row">
+            <input type="text" maxlength="1" class="otp-box" value="7" autofocus>
+            <input type="text" maxlength="1" class="otp-box" value="3">
+            <input type="text" maxlength="1" class="otp-box" value="9">
+            <input type="text" maxlength="1" class="otp-box" value="2">
+            <input type="text" maxlength="1" class="otp-box" value="1">
+            <input type="text" maxlength="1" class="otp-box" value="8">
+          </div>
+
+          <div id="otpValidationResult" class="otp-result-msg hidden"></div>
+
+          <div class="stepup-modal-footer">
+            <button class="btn btn-outline-cyan btn-sm" id="autofillOtpBtn">Autofill Demo OTP</button>
+            <div class="stepup-action-btns">
+              <button class="btn btn-dark" id="failChallengeBtn">Simulate Auth Failure</button>
+              <button class="btn btn-primary" id="verifyOtpBtn">Verify &amp; Authorize</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL 2: FULL AUDIT PAYLOAD INSPECTOR
+         ========================================== -->
+    <div class="modal-backdrop" id="auditModal" aria-hidden="true">
+      <div class="modal-dialog modal-lg glass-panel">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon icon-blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <div>
+              <h3 class="modal-title">Complete JSON Security Audit Trail</h3>
+              <p class="modal-sub">Raw signal telemetry and Explainable AI factor weights</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="closeAuditModalBtn">&times;</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="audit-code-box">
+            <pre><code id="auditJsonCode" class="font-mono text-sm">// Transaction JSON payload</code></pre>
+          </div>
+          <div class="audit-modal-footer">
+            <button class="btn btn-outline-cyan btn-sm" id="copyAuditJsonBtn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Copy JSON</span>
+            </button>
+            <button class="btn btn-dark btn-sm" id="closeAuditBtn">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="toast-popup hidden">
+      <span class="toast-icon">✓</span>
+      <span class="toast-message" id="toastMessage">Rulebook successfully deployed!</span>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
